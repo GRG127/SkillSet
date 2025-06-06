@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
 const cors = require('cors');
 const skillRoutes = require('./routes/skills');
 const authRoutes = require('./routes/auth');
@@ -50,12 +52,13 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/auth', authRoutes);
 app.use('/api/skills', skillRoutes);
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
+const clientBuildPath = path.join(__dirname, '../client/build');
+if (fs.existsSync(clientBuildPath)) {
+  app.use(express.static(clientBuildPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+}
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
