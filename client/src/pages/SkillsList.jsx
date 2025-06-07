@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../App';
-
+const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
 function SkillsList() {
   const [skills, setSkills] = useState([]);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/skills', {
+    fetch(`${baseUrl}/api/skills`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
     })
       .then(res => res.json())
@@ -15,7 +15,7 @@ function SkillsList() {
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/skills/${id}`, {
+    fetch(`${baseUrl}/api/skills/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
     })

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../App';
 import { useNavigate } from 'react-router-dom';
-
+const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
 function Profile() {
   const { user, setUser } = useContext(AuthContext);
   const [skills, setSkills] = useState([]);
@@ -13,7 +13,7 @@ function Profile() {
       navigate('/login');
       return;
     }
-    fetch('http://localhost:5000/api/skills', {
+    fetch(`${baseUrl}/api/skills`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
     })
       .then(res => res.json())
@@ -22,7 +22,7 @@ function Profile() {
   }, [user, navigate]);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/skills/${id}`, {
+    fetch(`${baseUrl}/api/skills/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
     })
@@ -31,7 +31,7 @@ function Profile() {
   };
 
   const handleUpdateUsername = () => {
-  fetch('http://localhost:5000/api/auth/update-username', {
+  fetch(`${baseUrl}/api/auth/update-username`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

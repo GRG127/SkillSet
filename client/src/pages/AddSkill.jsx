@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App';
-
+const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
 function AddSkill() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -15,7 +15,7 @@ function AddSkill() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/skills', {
+    fetch(`${baseUrl}/api/skills`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
